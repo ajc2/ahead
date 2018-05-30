@@ -10,7 +10,7 @@ class Board(val filePath: String) {
     init {
         val lines = File(filePath).readLines()
         height = lines.size
-        width = lines.map { it.length }.max()
+        width = lines.map { it.length }.max()!!
         cells = lines.map {
             it.padEnd(width).toCharArray()
         }.toTypedArray()
