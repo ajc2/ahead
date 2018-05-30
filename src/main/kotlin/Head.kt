@@ -54,7 +54,11 @@ class Head {
                 stack.push(a - b)
             }
             '*' -> stack.push(stack.pop() * stack.pop())
-            
+            '/' -> {
+                b = stack.pop()
+                a = stack.pop()
+                stack.push(a / b)
+            }
         }
     }
 
