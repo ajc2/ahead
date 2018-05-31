@@ -37,7 +37,7 @@ class Head {
                         return
                     }
                     else -> {
-                        doCell(cell)
+                        doCell(cell, board)
                     }
                 }
             }
@@ -51,7 +51,7 @@ class Head {
             HeadMode.NUMBER -> {
                 if(cell !in '0'..'9') {
                     mode = HeadMode.NORMAL
-                    doCell(cell)
+                    doCell(cell, board)
                 } else {
                     stack.push(stack.pop() * 10 + cell.toDigit())
                 }
@@ -73,7 +73,7 @@ class Head {
     /**
      * Interpret a cell as an instruction.
      */
-    private fun doCell(cell: Char) {
+    private fun doCell(cell: Char, board: Board) {
         var a: Int = 0
         var b: Int = 0
         
@@ -123,7 +123,13 @@ class Head {
                 print(stack.pop())
             }
             '?' -> {
-                if(stack.pop() == 0) reflect()
+                if(stack.pop() != 0) reflect()
+            }
+            ':' -> {
+                stack.dup()
+            }
+            'j' -> {
+                move(board)
             }
             
         }
