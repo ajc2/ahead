@@ -18,13 +18,13 @@ class Board(val filePath: String) {
 
     operator fun get(index: Int): CharArray = cells[index]
 
-    fun debug() {
-        for(row in cells) {
-            for(cell in row) {
-                print(cell)
-            }
-            println()
-        }
+    fun inBounds(x: Int, y: Int): Boolean {
+        return x in 0..width-1 && y in 0..height-1
     }
-    
+
+    override fun toString(): String {
+        return cells.map {
+            it.joinToString("")
+        }.joinToString("\n")
+    }
 }
