@@ -74,8 +74,8 @@ class Head {
      * Interpret a cell as an instruction.
      */
     private fun doCell(cell: Char, board: Board) {
-        var a: Int = 0
-        var b: Int = 0
+        var a: Int
+        var b: Int
         
         when(cell) {
             '^' -> {
@@ -131,6 +131,27 @@ class Head {
             'j' -> {
                 move(board)
             }
+            '$' -> {
+                stack.pop()
+            }
+            ')' -> {
+                b = stack.pop()
+                a = stack.pop()
+                stack.push((a > b).toInt())
+            }
+            '(' -> {
+                b = stack.pop()
+                a = stack.pop()
+                stack.push((a < b).toInt())
+            }
+            '=' -> {
+                b = stack.pop()
+                a = stack.pop()
+                stack.push((a == b).toInt())
+            }
+            '!' -> {
+                stack.push(if(stack.pop() == 0) 1 else 0)
+            }
             
         }
     }
@@ -174,3 +195,8 @@ enum class HeadMode {
  * to its Int value.
  */
 fun Char.toDigit() = this.toInt() - 48
+
+/**
+ * Helper extension to convert boolean to 1/0.
+*/
+fun Boolean.toInt() = if(this) 1 else 0
