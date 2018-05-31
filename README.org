@@ -1,0 +1,20 @@
+#+OPTIONS: num:nil ^:{}
+#+TITLE: Ahead
+
+The reference implementation of [[https://ajc2.xyz/projects/ahead][Ahead]]. This implementation is written in Kotlin and uses [[https://maven.apache.org/][Apache Maven]] for builds.
+
+* What to do?
+  #+BEGIN_EXAMPLE
+  Install Maven (Ubuntu is shown)
+  $ sudo apt install maven
+  
+  Clone this repo
+  $ git clone https://github.com/ajc2/ahead.git
+  
+  Build the project
+  $ cd ahead
+  $ mvn kotlin:compile package
+  
+  Try the examples
+  $ java -jar target/ahead-version.here-jar-with-dependencies.jar samples/hello.txt
+  #+END_EXAMPLE

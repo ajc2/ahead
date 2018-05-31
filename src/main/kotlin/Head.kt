@@ -150,7 +150,15 @@ class Head {
                 stack.push((a == b).toInt())
             }
             '!' -> {
-                stack.push(if(stack.pop() == 0) 1 else 0)
+                stack.push((stack.pop() == 0).toInt())
+            }
+            '_' -> {
+                dirY = 0
+                dirX = if(stack.pop() == 0) 1 else -1
+            }
+            '|' -> {
+                dirX = 0
+                dirY = if(stack.pop() == 0) 1 else -1
             }
             
         }
