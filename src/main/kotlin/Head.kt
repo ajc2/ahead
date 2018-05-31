@@ -126,6 +126,12 @@ class Head {
                 a = stack.pop()
                 stack.push(a / b)
             }
+            '%' -> {
+                // Modulo
+                b = stack.pop()
+                a = stack.pop()
+                stack.push(a % b)
+            }
             'p' -> {
                 // Power
                 // compute a^b
@@ -193,11 +199,12 @@ class Head {
             }
             'k' -> {
                 a = stack.pop()
-                if(a < 1) return
-                move(board)
-                c = board[posY][posX]
-                repeat(a) {
-                    doCell(c, board)
+                if(a > 0) {
+                    move(board)
+                    c = board[posY][posX]
+                    repeat(a) {
+                        doCell(c, board)
+                    }
                 }
             }
             'L' -> {
@@ -248,6 +255,11 @@ class Head {
                     dirX = -1
                     dirY = 0
                 }
+            }
+            'x' -> {
+                // Random
+                dirX = rand.nextInt(2) - 1
+                dirY = rand.nextInt(2) - 1
             }
             
         }
