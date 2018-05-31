@@ -1,6 +1,7 @@
 package ajc2.ahead
 
 import java.util.Random
+import kotlin.math.*
 
 class Head {
     private val rand = Random()
@@ -76,6 +77,7 @@ class Head {
     private fun doCell(cell: Char, board: Board) {
         var a: Int
         var b: Int
+        var c: Char
         
         when(cell) {
             '^' -> {
@@ -108,6 +110,14 @@ class Head {
                 a = stack.pop()
                 stack.push(a - b)
             }
+            'a' -> {
+                // Absolute Value
+                stack.push(stack.pop().absoluteValue)
+            'm' -> {
+                // Minus
+                // Negate top of stack
+                stack.push(-stack.pop())
+            }
             '*' -> {
                 stack.push(stack.pop() * stack.pop())
             }
@@ -115,6 +125,15 @@ class Head {
                 b = stack.pop()
                 a = stack.pop()
                 stack.push(a / b)
+            }
+            'p' -> {
+                // Power
+                // compute a^b
+                b = stack.pop()
+                a = stack.pop()
+                stack.push(
+                        a.toDouble().pow(b.toDouble()).toInt()
+                )
             }
             'o' -> {
                 print(stack.pop().toChar())
@@ -133,6 +152,18 @@ class Head {
             }
             '$' -> {
                 stack.pop()
+            }
+            // backslash
+            '\\' -> {
+                // swap top two stack items
+                b = stack.pop()
+                a = stack.pop()
+                stack.push(b)
+                stack.push(a)
+            }
+            'D' -> {
+                // dump stack
+                stack.clear()
             }
             ')' -> {
                 b = stack.pop()
@@ -159,6 +190,64 @@ class Head {
             '|' -> {
                 dirX = 0
                 dirY = if(stack.pop() == 0) 1 else -1
+            }
+            'k' -> {
+                a = stack.pop()
+                if(a < 1) return
+                move(board)
+                c = board[posY][posX]
+                repeat(a) {
+                    doCell(c, board)
+                }
+            }
+            'L' -> {
+                // 90deg left
+            }
+            'R' -> {
+                // 90deg right
+            }
+            'l' -> {
+                // 45deg left
+            }
+            'r' -> {
+                // 45deg right
+            }
+            'W' -> {
+                // writewhile
+                // pop and write char until 0
+                do {
+                    a = stack.pop()
+                    if(a != 0) print(a.toChar())
+                } while(a != 0)
+            }
+            'n' -> {
+                // Maybe North
+                // go North if pop is true
+                if(stack.pop() != 0) {
+                    dirX = 0
+                    dirY = -1
+                }
+            }
+            'e' -> {
+                // Maybe East
+                if(stack.pop() != 0) {
+                    dirX = 1
+                    dirY = 0
+                }
+            }
+            's' -> {
+                // Maybe South
+                if(stack.pop() != 0) {
+                    dirX = 0
+                    dirY = -1
+                }
+            }
+            'w' -> {
+                // Maybe West
+                if(stack.pop() != 0) {
+                    dirX = -1
+                    dirY = 0
+                }
             }
             
         }
