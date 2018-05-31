@@ -113,6 +113,7 @@ class Head {
             'a' -> {
                 // Absolute Value
                 stack.push(stack.pop().absoluteValue)
+            }
             'm' -> {
                 // Minus
                 // Negate top of stack
