@@ -24,25 +24,7 @@ class Head {
         val cell = board[posY][posX]
         when(mode) {
             HeadMode.NORMAL -> {
-                when(cell) {
-                    in '0'..'9' -> {
-                        stack.push(cell.toDigit())
-                        mode = HeadMode.NUMBER
-                    }
-                    '\u0022' -> {
-                        mode = HeadMode.STRING
-                    }
-                    '~' -> {
-                        mode = HeadMode.FLOATING
-                    }
-                    '@' -> {
-                        mode = HeadMode.DEAD
-                        return
-                    }
-                    else -> {
-                        doCell(cell, board)
-                    }
-                }
+                doCell(cell, board)
             }
             HeadMode.STRING -> {
                 if(cell == '\u0022') {
@@ -82,6 +64,19 @@ class Head {
         var c: Char
         
         when(cell) {
+            in '0'..'9' -> {
+                stack.push(cell.toDigit())
+                mode = HeadMode.NUMBER
+            }
+            '\u0022' -> {
+                mode = HeadMode.STRING
+            }
+            '~' -> {
+                mode = HeadMode.FLOATING
+            }
+            '@' -> {
+                mode = HeadMode.DEAD
+            }
             '^' -> {
                 dirX = 0
                 dirY = -1
@@ -266,6 +261,10 @@ class Head {
                     dirX = -1
                     dirY = 0
                 }
+            }
+            'b' -> {
+                // Bounce
+                reflect()
             }
             'x' -> {
                 // Random
