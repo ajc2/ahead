@@ -3,10 +3,11 @@ package ajc2.ahead
 import java.util.Random
 import kotlin.math.*
 
+// TODO: Good I/O.
 class Head {
     private val rand = Random()
     val stack = Stack()
-    
+
     var register = 0
     var posX = 0
     var posY = 0
@@ -14,9 +15,10 @@ class Head {
     var dirY = 0
     var mode = HeadMode.NORMAL
 
+    private val stdin = System.`in`.reader()
     /**
-     * Do one step of execution on the board.
-     */
+    * Do one step of execution on the board.
+    */
     fun step(board: Board) {
         // interpret current cell
         val cell = board[posY][posX]
@@ -27,7 +29,7 @@ class Head {
                         stack.push(cell.toDigit())
                         mode = HeadMode.NUMBER
                     }
-                    '\u0022' -> {  //doublequote
+                    '\u0022' -> {
                         mode = HeadMode.STRING
                     }
                     '~' -> {
@@ -66,14 +68,14 @@ class Head {
                 return
             }
         }
-        
+
         // move
         move(board)
     }
 
     /**
-     * Interpret a cell as an instruction.
-     */
+    * Interpret a cell as an instruction.
+    */
     private fun doCell(cell: Char, board: Board) {
         var a: Int
         var b: Int
@@ -210,9 +212,17 @@ class Head {
             }
             'L' -> {
                 // 90deg left
+                a = dirX
+                b = dirY
+                dirX = b
+                dirY = -a
             }
             'R' -> {
                 // 90deg right
+                a = dirX
+                b = dirY
+                dirX = -b
+                dirY = a
             }
             'l' -> {
                 // 45deg left
@@ -259,10 +269,19 @@ class Head {
             }
             'x' -> {
                 // Random
-                dirX = rand.nextInt(2) - 1
-                dirY = rand.nextInt(2) - 1
+                dirX = rand.nextInt(3) - 1
+                dirY = rand.nextInt(3) - 1
             }
-            
+            'N' -> {
+                stack.push('\n'.toInt())
+            }
+            '\'' -> {
+                move(board)
+                stack.push(board[posY][posX].toInt())
+            }
+            'i' -> {
+                stack.push(stdin.read())
+            }
         }
     }
 
@@ -301,12 +320,12 @@ enum class HeadMode {
 }
 
 /**
- * Helper extension to convert a digit character
- * to its Int value.
- */
+* Helper extension to convert a digit character
+* to its Int value.
+*/
 fun Char.toDigit() = this.toInt() - 48
 
 /**
- * Helper extension to convert boolean to 1/0.
+* Helper extension to convert boolean to 1/0.
 */
 fun Boolean.toInt() = if(this) 1 else 0
