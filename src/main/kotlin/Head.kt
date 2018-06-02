@@ -11,8 +11,7 @@ class Head {
     var register = 0
     var posX = 0
     var posY = 0
-    var dirX = 1
-    var dirY = 0
+    var direction = HeadDirection.EAST
     var mode = HeadMode.NORMAL
 
     private val stdin = System.`in`.reader()
@@ -78,20 +77,16 @@ class Head {
                 mode = HeadMode.DEAD
             }
             '^' -> {
-                dirX = 0
-                dirY = -1
+                direction = HeadDirection.NORTH
             }
             'v' -> {
-                dirX = 0
-                dirY = 1
+                direction = HeadDirection.SOUTH
             }
             '<' -> {
-                dirX = -1
-                dirY = 0
+                direction = HeadDirection.WEST
             }
             '>' -> {
-                dirX = 1
-                dirY = 0
+                direction = HeadDirection.EAST
             }
             '&' -> {
                 register = stack.pop()
@@ -188,12 +183,18 @@ class Head {
                 stack.push((stack.pop() == 0).toInt())
             }
             '_' -> {
-                dirY = 0
-                dirX = if(stack.pop() == 0) 1 else -1
+                direction = if(stack.pop() == 0) {
+                    HeadDirection.EAST
+                } else {
+                    HeadDirection.WEST
+                }
             }
             '|' -> {
-                dirX = 0
-                dirY = if(stack.pop() == 0) 1 else -1
+                direction = if(stack.pop() == 0) {
+                    HeadDirection.SOUTH
+                } else {
+                    HeadDirection.NORTH
+                }
             }
             'k' -> {
                 a = stack.pop()
@@ -207,23 +208,19 @@ class Head {
             }
             'L' -> {
                 // 90deg left
-                a = dirX
-                b = dirY
-                dirX = b
-                dirY = -a
+                direction = direction.turnBy(-2)
             }
             'R' -> {
                 // 90deg right
-                a = dirX
-                b = dirY
-                dirX = -b
-                dirY = a
+                direction = direction.turnBy(2)
             }
             'l' -> {
                 // 45deg left
+                direction = direction.turnBy(-1)
             }
             'r' -> {
                 // 45deg right
+                direction = direction.turnBy(1)
             }
             'W' -> {
                 // writewhile
@@ -237,29 +234,25 @@ class Head {
                 // Maybe North
                 // go North if pop is true
                 if(stack.pop() != 0) {
-                    dirX = 0
-                    dirY = -1
+                    direction = HeadDirection.NORTH
                 }
             }
             'e' -> {
                 // Maybe East
                 if(stack.pop() != 0) {
-                    dirX = 1
-                    dirY = 0
+                    direction = HeadDirection.EAST
                 }
             }
             's' -> {
                 // Maybe South
                 if(stack.pop() != 0) {
-                    dirX = 0
-                    dirY = -1
+                    direction = HeadDirection.SOUTH
                 }
             }
             'w' -> {
                 // Maybe West
                 if(stack.pop() != 0) {
-                    dirX = -1
-                    dirY = 0
+                    direction = HeadDirection.WEST
                 }
             }
             'b' -> {
@@ -268,8 +261,11 @@ class Head {
             }
             'x' -> {
                 // Random
-                dirX = rand.nextInt(3) - 1
-                dirY = rand.nextInt(3) - 1
+                direction = HeadDirection.random()
+            }
+            'X' -> {
+                // Cardinal Random
+                direction = HeadDirection.random(cardinal = true)
             }
             'N' -> {
                 stack.push('\n'.toInt())
@@ -290,12 +286,13 @@ class Head {
 
     // Reflect the direction of the head.
     private fun reflect() {
-        dirX = -dirX
-        dirY = -dirY
+        direction = direction.turnBy(4)
     }
 
     // Move the head to its next position.
     private fun move(board: Board) {
+        val dirX = direction.x
+        val dirY = direction.y
         var nextX = posX + dirX
         var nextY = posY + dirY
         if(!board.inBounds(nextX, nextY)) {
@@ -316,6 +313,35 @@ enum class HeadMode {
     STRING,
     FLOATING,
     DEAD
+}
+
+enum class HeadDirection(val x: Int, val y: Int) {
+    EAST      ( 1,  0),
+    SOUTHEAST ( 1,  1),
+    SOUTH     ( 0,  1),
+    SOUTHWEST (-1,  1),
+    WEST      (-1,  0),
+    NORTHWEST (-1, -1),
+    NORTH     ( 0, -1),
+    NORTHEAST ( 1, -1);
+
+    fun turnBy(o: Int): HeadDirection {
+        val vals = HeadDirection.values()
+        val count = vals.size
+        var next = (ordinal + o % count) % count
+        if(next < 0) next += count
+        return vals[next]
+    }
+
+    companion object {
+        fun random(cardinal: Boolean = false): HeadDirection {
+            return if(cardinal) {
+                HeadDirection.values()[Random().nextInt(4) * 2]
+            } else {
+                HeadDirection.values()[Random().nextInt(8)]
+            }
+        }
+    }
 }
 
 /**
