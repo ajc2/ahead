@@ -336,9 +336,9 @@ enum class HeadDirection(val x: Int, val y: Int) {
     companion object {
         fun random(cardinal: Boolean = false): HeadDirection {
             return if(cardinal) {
-                HeadDirection.values()[Random().nextInt(4) * 2]
+                values()[Random().nextInt(4) * 2]
             } else {
-                HeadDirection.values()[Random().nextInt(8)]
+                values()[Random().nextInt(8)]
             }
         }
     }
