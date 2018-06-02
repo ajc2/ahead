@@ -20,7 +20,7 @@ class Head {
     fun step(board: Board) {
         // interpret current cell
         val cell = board[posY][posX]
-        println("CURRENT: $cell")
+        //println("CURRENT: $cell")
         when(mode) {
             HeadMode.NORMAL -> {
                 // normal mode of execution
