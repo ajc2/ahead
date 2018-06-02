@@ -20,6 +20,7 @@ class Head {
     fun step(board: Board) {
         // interpret current cell
         val cell = board[posY][posX]
+        println("CURRENT: $cell")
         when(mode) {
             HeadMode.NORMAL -> {
                 // normal mode of execution
@@ -341,16 +342,14 @@ class Head {
 
     // Move the head to its next position.
     private fun move(board: Board) {
-        val dirX = direction.x
-        val dirY = direction.y
-        var nextX = posX + dirX
-        var nextY = posY + dirY
+        var nextX = posX + direction.x
+        var nextY = posY + direction.y
 
         // Try moving backwards if this is not a valid space
         if(!board.inBounds(nextX, nextY)) {
             reflect()
-            nextX = posX + dirX
-            nextY = posY + dirY
+            nextX = posX + direction.x
+            nextY = posY + direction.y
             // Stay put if this is not valid
             if(!board.inBounds(nextX, nextY)) return
         }
