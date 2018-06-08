@@ -10,9 +10,9 @@ import kotlin.math.*
  */
 class Head {
     private val rand = Random()
-    val stack = Stack()
-    private val stdin = System.`in`.reader()
+    private val io = IOWrapper()
 
+    val stack = Stack()
     var register = 0
     var posX = 0
     var posY = 0
@@ -73,6 +73,7 @@ class Head {
         var a: Int
         var b: Int
         var c: Char
+        var i: Int?
         
         when(cell) {
             in '0'..'9' -> {
@@ -331,7 +332,21 @@ class Head {
             }
             'i' -> {
                 // Input Char
-                stack.push(stdin.read())
+                i = io.getChar()
+                if(i == null) {
+                    reflect()
+                } else {
+                    stack.push(i)
+                }
+            }
+            'I' -> {
+                // Input Char
+                i = io.getNumber()
+                if(i == null) {
+                    reflect()
+                } else {
+                    stack.push(i)
+                }
             }
         }
     }

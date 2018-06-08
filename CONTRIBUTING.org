@@ -1,0 +1,4 @@
+#+OPTIONS: num:nil ^:{}
+#+TITLE: Guidelines for Contributing
+
+coming eventually

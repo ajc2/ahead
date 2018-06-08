@@ -1,7 +1,7 @@
 #+OPTIONS: num:nil ^:{}
 #+TITLE: Ahead
 
-The reference implementation of [[https://ajc2.xyz/projects/ahead][Ahead]]. This implementation is written in Kotlin and uses [[https://maven.apache.org/][Apache Maven]] for builds.
+The reference implementation of [[https://ajc2.xyz/projects/ahead][Ahead]]. This implementation is written in [[https://kotlinlang.org][Kotlin]] and uses [[https://maven.apache.org/][Apache Maven]] for builds.
 
 * What to do?
   #+BEGIN_EXAMPLE
