@@ -1,46 +1,36 @@
 package ajc2.ahead
 
-import java.io.PushbackReader
+import java.util.Scanner
+import java.util.regex.Pattern
 
 /**
  * A wrapper for all head IO functions
  */
 class IOWrapper {
-    private val input = PushbackReader(System.`in`.reader())
+    private val input = Scanner(System.`in`)
+    private val charPat = Pattern.compile(".", Pattern.DOTALL)
+    private val numDelim = Pattern.compile("""\D+""")
 
+    /**
+     * Return the next character in the input stream,
+     * or null if not available.
+     */
     fun getChar(): Int? {
-        if(!input.ready()) return null
-        val i = input.read()
-
-        return if(i == -1) null else i
+        val next: String? = input.findInLine(charPat)
+        return next?.get(0)?.toInt()
     }
 
+    /**
+     * Parse the next decimal integer out of the input.
+     */
     fun getNumber(): Int? {
-        if(!input.ready()) return null
-        val acc = StringBuilder()
-        var i: Int
-
-        // read until first digit character
-        do {
-            i = input.read()
-        } while(i != -1 && i.toChar() !in '0'..'9')
-
-        // read digits until last digit character
-        while(i != -1 && i.toChar() in '0'..'9') {
-            acc.append(i)
-            i = input.read()
-        }
-
-        if(i != -1) input.unread(i)
-        
-        // parse or return null
-        try {
-            return acc.toString().toInt()
-        } catch(e: NumberFormatException) {
-            return null
-        }
+        input.useDelimiter(numDelim)
+        return if(input.hasNextInt()) input.nextInt() else null
     }
 
+    /**
+     * Close the input/output streams.
+     */
     fun close() {
         input.close()
     }

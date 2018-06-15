@@ -25,7 +25,6 @@ class Head {
     fun step(board: Board) {
         // interpret current cell
         val cell = board[posY][posX]
-        //println("CURRENT: $cell")
         when(mode) {
             HeadMode.NORMAL -> {
                 // normal mode of execution
@@ -70,6 +69,7 @@ class Head {
      * Interpret a cell as an instruction.
      */
     private fun doCell(cell: Char, board: Board) {
+        //println("DO: $cell")
         var a: Int
         var b: Int
         var c: Char
