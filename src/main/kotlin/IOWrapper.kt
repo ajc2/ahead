@@ -7,7 +7,7 @@ import java.util.regex.Pattern
  * A wrapper for all head IO functions
  */
 class IOWrapper {
-    private val input = Scanner(System.`in`)
+    private val input = Scanner(System.`in`, "utf8")
     private val charPat = Pattern.compile(".", Pattern.DOTALL)
     private val numDelim = Pattern.compile("""\D+""")
 
@@ -16,8 +16,12 @@ class IOWrapper {
      * or null if not available.
      */
     fun getChar(): Int? {
-        val next: String? = input.findInLine(charPat)
-        return next?.get(0)?.toInt()
+        input.useDelimiter("")
+        return if(input.hasNext(charPat)) {
+            input.next(charPat)[0].toInt()
+        } else {
+            null
+        }
     }
 
     /**
