@@ -151,10 +151,18 @@ class Head {
                 stack.push(a / b)
             }
             '%' -> {
-                // Modulo
+                // Remainder
+                // truncated division integer modulo
                 b = stack.pop()
                 a = stack.pop()
                 stack.push(a % b)
+            }
+            ';' -> {
+                // Modulo
+                // floored division integer modulo
+                b = stack.pop()
+                a = stack.pop()
+                stack.push((a - b.toDouble() * floor(a.toDouble() / b).toInt())
             }
             'p' -> {
                 // Power
