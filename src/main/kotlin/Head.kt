@@ -70,10 +70,6 @@ class Head {
      */
     private fun doCell(cell: Char, board: Board) {
         //println("DO: $cell")
-        var a: Int
-        var b: Int
-        var c: Char
-        var i: Int?
         
         when(cell) {
             in '0'..'9' -> {
@@ -127,8 +123,8 @@ class Head {
             }
             '-' -> {
                 // subtract top two stack items
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push(a - b)
             }
             'a' -> {
@@ -146,29 +142,29 @@ class Head {
             }
             '/' -> {
                 // divide top two stack items
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push(a / b)
             }
             '%' -> {
                 // Remainder
                 // truncated division integer modulo
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push(a % b)
             }
             ';' -> {
                 // Modulo
                 // floored division integer modulo
-                b = stack.pop()
-                a = stack.pop()
-                stack.push((a - b.toDouble() * floor(a.toDouble() / b).toInt())
+                val b = stack.pop()
+                val a = stack.pop()
+                stack.push((a - b.toDouble() * floor(a.toDouble() / b)).toInt())
             }
             'p' -> {
                 // Power
                 // compute a^b
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push(
                         a.toDouble().pow(b.toDouble()).toInt()
                 )
@@ -203,8 +199,8 @@ class Head {
             // backslash
             '\\' -> {
                 // swap top two stack items
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push(b)
                 stack.push(a)
             }
@@ -215,20 +211,20 @@ class Head {
             }
             ')' -> {
                 // Greater Than
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push((a > b).toInt())
             }
             '(' -> {
                 // Less Than
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push((a < b).toInt())
             }
             '=' -> {
                 // Equal
-                b = stack.pop()
-                a = stack.pop()
+                val b = stack.pop()
+                val a = stack.pop()
                 stack.push((a == b).toInt())
             }
             '!' -> {
@@ -258,10 +254,10 @@ class Head {
                 // Do next cell N times
                 // where N is the top of stack.
                 // If N is less than 1, skip next cell
-                a = stack.pop()
+                val a = stack.pop()
                 move(board)
                 if(a > 0) {
-                    c = board[posY][posX]
+                    val c = board[posY][posX]
                     repeat(a) {
                         doCell(c, board)
                     }
@@ -287,7 +283,7 @@ class Head {
                 // writewhile
                 // pop and write char until 0
                 do {
-                    a = stack.pop()
+                    val a = stack.pop()
                     if(a != 0) print(a.toChar())
                 } while(a != 0)
             }
@@ -340,7 +336,7 @@ class Head {
             }
             'i' -> {
                 // Input Char
-                i = io.getChar()
+                val i: Int? = io.getChar()
                 if(i == null) {
                     reflect()
                 } else {
@@ -349,10 +345,23 @@ class Head {
             }
             'I' -> {
                 // Input Char
-                i = io.getNumber()
+                val i: Int? = io.getNumber()
                 if(i == null) {
                     reflect()
                 } else {
+                    stack.push(i)
+                }
+            }
+            'E' -> {
+                // Expand Range
+                val b = stack.pop()
+                val a = stack.pop()
+                val range = when {
+                    a < b -> a..b
+                    a > b -> a downTo b
+                    else -> a..a
+                }
+                for(i in range) {
                     stack.push(i)
                 }
             }
