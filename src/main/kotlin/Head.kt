@@ -357,8 +357,8 @@ class Head {
                 val b = stack.pop()
                 val a = stack.pop()
                 val range = when {
-                    a > b -> a..b
-                    a < b -> a downTo b
+                    a < b -> b downTo a
+                    a > b -> b..a
                     else -> a..a
                 }
                 for(i in range) {
