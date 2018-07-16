@@ -365,6 +365,23 @@ class Head {
                     stack.push(i)
                 }
             }
+            '[' -> {
+                val b = stack.pop()
+                val a = stack.pop()
+                stack.push(min(a, b) ?: 0)
+            }
+            ']' -> {
+                val b = stack.pop()
+                val a = stack.pop()
+                stack.push(max(a, b) ?: 0)
+            }
+            'K' -> {
+                move(board)
+                while(stack.size > 1) {
+                    val c = board[posY][posX]
+                    doCell(c, board)
+                }
+            }
         }
     }
 
