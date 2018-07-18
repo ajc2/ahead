@@ -382,6 +382,16 @@ class Head {
                     doCell(c, board)
                 }
             }
+            'u' -> {
+                stack.reverse()
+            }
+
+            '{' -> {
+                stack.shiftLeft()
+            }
+            '}' -> {
+                stack.shiftRight()
+            }
         }
     }
 
