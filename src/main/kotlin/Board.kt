@@ -2,13 +2,13 @@ package ajc2.ahead
 
 import java.io.File
 
-class Board(val filePath: String) {
+class Board {
     private val cells: Array<CharArray>
     val height: Int
     val width: Int
     
-    init {
-        val lines = File(filePath).readLines()
+    constructor(file: File) {
+        val lines = file.readLines()
         height = lines.size
         width = lines.map { it.length }.max()!!
         cells = lines.map {

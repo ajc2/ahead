@@ -81,6 +81,7 @@ class Head {
                 // Doublequote
                 // enter stringmode
                 mode = HeadMode.STRING
+                stack.push(0)
             }
             '~' -> {
                 // enter floating mode
