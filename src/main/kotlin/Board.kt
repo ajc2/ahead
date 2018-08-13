@@ -18,8 +18,12 @@ class Board {
 
     operator fun get(index: Int): CharArray = cells[index]
 
-    fun inBounds(x: Int, y: Int): Boolean {
-        return x in 0..width-1 && y in 0..height-1
+    fun isValid(x: Int, y: Int, checkWalls: Boolean = true): Boolean {
+        var valid = x in 0..width-1 && y in 0..height-1
+        if(checkWalls) {
+            valid = valid && cells[y][x] != '#'
+        }
+        return valid
     }
 
     override fun toString(): String {

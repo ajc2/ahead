@@ -9,27 +9,21 @@ import java.util.regex.Pattern
 class IOWrapper {
     private val input = Scanner(System.`in`, "utf8")
     private val charPat = Pattern.compile(".", Pattern.DOTALL)
-    private val numDelim = Pattern.compile("""\D+""")
+    private val numPat = Pattern.compile("""[+-]?\d+""")
 
     /**
      * Return the next character in the input stream,
      * or null if not available.
      */
     fun getChar(): Int? {
-        input.useDelimiter("")
-        return if(input.hasNext(charPat)) {
-            input.next(charPat)[0].toInt()
-        } else {
-            null
-        }
+        return input.findWithinHorizon(charPat, 0)?.get(0)?.toInt()
     }
 
     /**
      * Parse the next decimal integer out of the input.
      */
     fun getNumber(): Int? {
-        input.useDelimiter(numDelim)
-        return if(input.hasNextInt()) input.nextInt() else null
+        return input.findWithinHorizon(numPat, 0)?.toInt()
     }
 
     /**

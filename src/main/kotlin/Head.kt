@@ -62,7 +62,7 @@ class Head {
         }
 
         // move
-        move(board)
+        move(board, checkWalls = mode != HeadMode.STRING)
     }
 
     /**
@@ -210,6 +210,10 @@ class Head {
                 // empty stack
                 stack.clear()
             }
+            'd' -> {
+                // Stack Depth
+                stack.push(stack.size)
+            }
             ')' -> {
                 // Greater Than
                 val b = stack.pop()
@@ -332,7 +336,7 @@ class Head {
             '\'' -> {
                 // Pick Up
                 // Push next cell to stack and skip
-                move(board)
+                move(board, checkWalls = false)
                 stack.push(board[posY][posX].toInt())
             }
             'i' -> {
@@ -406,17 +410,17 @@ class Head {
     }
 
     // Move the head to its next position.
-    private fun move(board: Board) {
+    private fun move(board: Board, checkWalls: Boolean = true) {
         var nextX = posX + direction.x
         var nextY = posY + direction.y
 
         // Try moving backwards if this is not a valid space
-        if(!board.inBounds(nextX, nextY)) {
+        if(!board.isValid(nextX, nextY, checkWalls)) {
             reflect()
             nextX = posX + direction.x
             nextY = posY + direction.y
             // Stay put if this is not valid
-            if(!board.inBounds(nextX, nextY)) return
+            if(!board.isValid(nextX, nextY, checkWalls)) return
         }
         
         posX = nextX
