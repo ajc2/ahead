@@ -284,6 +284,14 @@ class Head {
                 // 45deg right turn
                 direction = direction.turnBy(1)
             }
+            'h' -> {
+                // Set Direction
+                direction = HeadDirection.facing(stack.pop())
+            }
+            'H' -> {
+                // Turn By
+                direction = direction.turnBy(stack.pop())
+            }
             'W' -> {
                 // writewhile
                 // pop and write char until 0
@@ -349,7 +357,7 @@ class Head {
                 }
             }
             'I' -> {
-                // Input Char
+                // Input Number
                 val i: Int? = io.getNumber()
                 if(i == null) {
                     reflect()

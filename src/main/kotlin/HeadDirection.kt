@@ -46,5 +46,16 @@ enum class HeadDirection(val x: Int, val y: Int) {
                 values()[Random().nextInt(8)]
             }
         }
+
+        /**
+         * Get a direction given a number.
+         * 0 is East, and the directions are ordered 
+         * clockwise. Values are cyclical, like angles.
+         */
+        fun facing(d: Int): HeadDirection {
+            val vals = values()
+            val count = vals.size
+            return vals[(d % count + count) % count]
+        }
     }
 }
