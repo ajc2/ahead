@@ -396,14 +396,34 @@ class Head {
                 }
             }
             'u' -> {
+                // Reverse stack
                 stack.reverse()
             }
-
+            'U' -> {
+                // Reverse up to first 0
+                TODO()
+            }
             '{' -> {
                 stack.shiftLeft()
             }
             '}' -> {
                 stack.shiftRight()
+            }
+            'C' -> {
+                // Increment register
+                register++
+            }
+            'c' -> {
+                // Decrement register
+                register--
+            }
+            'S' -> {
+                // Slurp input
+                var i: Int? = 0
+                do {
+                    stack.push(i!!)
+                    i = io.getChar()
+                } while(i != null)
             }
         }
     }
