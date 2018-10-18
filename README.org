@@ -1,20 +1,23 @@
 #+OPTIONS: num:nil ^:{}
 #+TITLE: Ahead
 
-The reference implementation of [[https://ajc2.xyz/projects/ahead][Ahead]]. This implementation is written in [[https://kotlinlang.org][Kotlin]] and uses [[https://maven.apache.org/][Apache Maven]] for builds.
+The reference implementation of [[https://ajc2.xyz/projects/ahead][Ahead]]. This implementation is written in [[https://kotlinlang.org][Kotlin]] and now uses [[https://gradle.org][Gradle]] for builds.
 
 * What to do?
-  #+BEGIN_EXAMPLE
-  Install Maven (Ubuntu is shown)
-  $ sudo apt install maven
-  
-  Clone this repo
-  $ git clone https://github.com/ajc2/ahead.git
-  
-  Build the project
-  $ cd ahead
-  $ mvn kotlin:compile package
-  
-  Try the examples
-  $ java -jar target/ahead-version.here-jar-with-dependencies.jar samples/hello.txt
-  #+END_EXAMPLE
+** 0: Install Gradle
+[[https://gradle.org/install][Here's how.]]
+** 1: Clone this repository
+#+BEGIN_EXAMPLE
+$ git clone https://github.com/ajc2/ahead.git
+$ cd ahead
+#+END_EXAMPLE
+** 2: Build
+#+BEGIN_EXAMPLE
+$ ./gradlew installDist
+#+END_EXAMPLE
+The output will be contained in the =build/install/ahead= directory. The =bin= folder contains scripts to run Ahead, =ahead= and =ahead.bat=. The =lib= folder contains the dependency jars.
+** 3: Run
+Add the =bin= folder to your =PATH= appropriately and run Ahead!
+#+BEGIN_EXAMPLE
+$ ahead samples/hello.txt
+#+END_EXAMPLE
