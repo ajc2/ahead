@@ -1,6 +1,6 @@
 plugins {
     application
-    kotlin("jvm") version "1.2.61" 
+    kotlin("jvm") version "1.3.0"
 }
 
 application {
@@ -8,9 +8,9 @@ application {
 }
 
 repositories {
-    jcenter() 
+    jcenter()
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8")) 
+    compile(kotlin("stdlib-jdk8"))
 }

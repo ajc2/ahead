@@ -1,6 +1,6 @@
 package ajc2.ahead
 
-import java.util.Random
+import kotlin.random.Random
 
 /**
  * Enum class to represent the head's current traveling direction.
@@ -41,9 +41,9 @@ enum class HeadDirection(val x: Int, val y: Int) {
          */
         fun random(cardinal: Boolean = false): HeadDirection {
             return if(cardinal) {
-                values()[Random().nextInt(4) * 2]
+                values()[Random.nextInt(4) * 2]
             } else {
-                values()[Random().nextInt(8)]
+                values()[Random.nextInt(8)]
             }
         }
 

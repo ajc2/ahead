@@ -1,6 +1,6 @@
 package ajc2.ahead
 
-import java.util.Random
+import kotlin.random.Random
 import kotlin.math.*
 
 /**
@@ -9,7 +9,7 @@ import kotlin.math.*
  * instruction pointer or program counter.
  */
 class Head {
-    private val rand = Random()
+    private val rand = Random.Default
     private val io = IOWrapper()
 
     val stack = Stack()
@@ -381,12 +381,12 @@ class Head {
             '[' -> {
                 val b = stack.pop()
                 val a = stack.pop()
-                stack.push(min(a, b) ?: 0)
+                stack.push(min(a, b))
             }
             ']' -> {
                 val b = stack.pop()
                 val a = stack.pop()
-                stack.push(max(a, b) ?: 0)
+                stack.push(max(a, b))
             }
             'K' -> {
                 move(board)
