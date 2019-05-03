@@ -451,7 +451,7 @@ class Head {
             }
             'M' -> {
                 // Pop char and evaluate
-                doCell(stack.pop().toChar())
+                doCell(stack.pop().toChar(), board)
             }
         }
     }
