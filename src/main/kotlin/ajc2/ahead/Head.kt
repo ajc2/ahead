@@ -4,10 +4,10 @@ import kotlin.random.Random
 import kotlin.math.*
 
 /**
- * Program execution and behavior.
- * The head is the Ahead equivalent of the
- * instruction pointer or program counter.
- */
+* Program execution and behavior.
+* The head is the Ahead equivalent of the
+* instruction pointer or program counter.
+*/
 class Head {
     private val rand = Random.Default
     private val io = IOWrapper()
@@ -20,54 +20,74 @@ class Head {
     var mode = HeadMode.NORMAL
     
     /**
-     * Do one step of execution on the board.
-     */
+    * Do one step of execution on the board.
+    */
     fun step(board: Board) {
-        // interpret current cell
-        val cell = board[posY][posX]
-        when(mode) {
-            HeadMode.NORMAL -> {
-                // normal mode of execution
-                doCell(cell, board)
-            }
-            HeadMode.STRING -> {
-                // pushes chars on board to stack
-                if(cell == '\u0022') {
-                    // exit stringmode when encountering a doublequote
-                    mode = HeadMode.NORMAL
-                } else {
-                    stack.push(cell.toInt())
-                }
-            }
-            HeadMode.NUMBER -> {
-                // reads number values onto the stack
-                if(cell !in '0'..'9') {
-                    // exit numbermode when cell is not a digit
-                    mode = HeadMode.NORMAL
+        try {
+            // interpret current cell
+            val cell = board[posY][posX]
+            when(mode) {
+                HeadMode.NORMAL -> {
+                    // normal mode of execution
                     doCell(cell, board)
-                } else {
-                    stack.push(stack.pop() * 10 + cell.toDigit())
+                }
+                HeadMode.STRING -> {
+                    // pushes chars on board to stack
+                    if(cell == '\u0022') {
+                        // exit stringmode when encountering a doublequote
+                        mode = HeadMode.NORMAL
+                    } else {
+                        stack.push(cell.toInt())
+                    }
+                }
+                HeadMode.NUMBER -> {
+                    // reads number values onto the stack
+                    if(cell !in '0'..'9') {
+                        // exit numbermode when cell is not a digit
+                        mode = HeadMode.NORMAL
+                        doCell(cell, board)
+                    } else {
+                        stack.push(stack.pop() * 10 + cell.toDigit())
+                    }
+                }
+                HeadMode.FLOATING -> {
+                    // skips all instructions until next ~
+                    if(cell == '~') {
+                        mode = HeadMode.NORMAL
+                    }
+                }
+                HeadMode.DEAD -> {
+                    // terminated; does nothing
+                    return
                 }
             }
-            HeadMode.FLOATING -> {
-                // skips all instructions until next ~
-                if(cell == '~') {
-                    mode = HeadMode.NORMAL
-                }
-            }
-            HeadMode.DEAD -> {
-                // terminated; does nothing
-                return
-            }
-        }
 
-        // move
-        move(board, checkWalls = mode != HeadMode.STRING)
+            // move
+            move(board, checkWalls = mode != HeadMode.STRING)
+        } catch(ex: Exception) {
+            System.err.println("Head encountered exception at ($posX,$posY).")
+            System.err.println("STATE: $mode")
+            System.err.println("DIR: $direction")
+            System.err.println("REG: $register")
+            System.err.println("CELL: ${board[posY][posX]}")
+
+            System.err.println("\nBOARD\n-----")
+            System.err.println("$board")
+
+            System.err.println("\nSTACK DUMP\n---TOP----")
+            while(stack.size > 0) {
+                System.err.println(stack.pop())
+            }
+
+            System.err.println("\nJVM stacktrace below:")
+            ex.printStackTrace()
+            mode = HeadMode.DEAD
+        }
     }
 
     /**
-     * Interpret a cell as an instruction.
-     */
+    * Interpret a cell as an instruction.
+    */
     private fun doCell(cell: Char, board: Board) {
         //println("DO: $cell")
         
@@ -292,6 +312,10 @@ class Head {
                 // Turn By
                 direction = direction.turnBy(stack.pop())
             }
+            'A' -> {
+                // Push direction
+                stack.push(direction.ordinal)
+            }
             'W' -> {
                 // writewhile
                 // pop and write char until 0
@@ -424,6 +448,10 @@ class Head {
                     stack.push(i!!)
                     i = io.getChar()
                 } while(i != null)
+            }
+            'M' -> {
+                // Pop char and evaluate
+                doCell(stack.pop().toChar())
             }
         }
     }

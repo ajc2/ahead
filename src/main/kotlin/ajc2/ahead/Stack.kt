@@ -25,7 +25,7 @@ class Stack {
 
     fun dup() {
         deque.add(
-            if(deque.size == 0) 0 else deque[deque.lastIndex]
+            if(deque.size == 0) 0 else deque.last()
         )
     }
 
@@ -34,11 +34,11 @@ class Stack {
     }
     
     fun shiftLeft() {
-        if(size != 0) deque.add(deque.removeAt(0))
+        if(size > 1) deque.add(deque.removeAt(0))
     }
 
     fun shiftRight() {
-        if(size != 0) deque.add(deque.removeAt(deque.lastIndex), 0)
+        if(size > 1) deque.add(0, deque.removeAt(deque.lastIndex))
     }
 
     fun reverse() {
