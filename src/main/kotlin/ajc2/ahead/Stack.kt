@@ -16,7 +16,7 @@ class Stack {
     }
 
     fun pop(): Int {
-        return if(deque.size == 0) {
+        return if(size == 0) {
             0
         } else {
             deque.removeAt(deque.lastIndex)
@@ -25,12 +25,16 @@ class Stack {
 
     fun dup() {
         deque.add(
-            if(deque.size == 0) 0 else deque.last()
+            if(size == 0) 0 else deque.last()
         )
     }
 
     fun clear() {
         deque.clear()
+    }
+
+    fun addAll(list: List<Int>) {
+        deque.addAll(list)
     }
     
     fun shiftLeft() {

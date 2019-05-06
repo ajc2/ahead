@@ -16,6 +16,15 @@ class Board {
         }.toTypedArray()
     }
 
+    constructor(string: String) {
+        val lines = string.lines()
+        height = lines.size
+        width = lines.map { it.length }.max()!!
+        cells = lines.map {
+            it.padEnd(width).toCharArray()
+        }.toTypedArray()
+    }
+
     operator fun get(index: Int): CharArray = cells[index]
 
     fun isValid(x: Int, y: Int, checkWalls: Boolean = true): Boolean {
