@@ -23,66 +23,46 @@ class Head {
     * Do one step of execution on the board.
     */
     fun step(board: Board) {
-        try {
-            // interpret current cell
-            val cell = board[posY][posX]
-            when(mode) {
-                HeadMode.NORMAL -> {
-                    // normal mode of execution
+        // interpret current cell
+        val cell = board[posY][posX]
+        when(mode) {
+            HeadMode.NORMAL -> {
+                // normal mode of execution
+                doCell(cell, board)
+            }
+            HeadMode.STRING -> {
+                // pushes chars on board to stack
+                if(cell == '\u0022') {
+                    // exit stringmode when encountering a doublequote
+                    mode = HeadMode.NORMAL
+                } else {
+                    stack.push(cell.toInt())
+                }
+            }
+            HeadMode.NUMBER -> {
+                // reads number values onto the stack
+                if(cell !in '0'..'9') {
+                    // exit numbermode when cell is not a digit
+                    mode = HeadMode.NORMAL
                     doCell(cell, board)
-                }
-                HeadMode.STRING -> {
-                    // pushes chars on board to stack
-                    if(cell == '\u0022') {
-                        // exit stringmode when encountering a doublequote
-                        mode = HeadMode.NORMAL
-                    } else {
-                        stack.push(cell.toInt())
-                    }
-                }
-                HeadMode.NUMBER -> {
-                    // reads number values onto the stack
-                    if(cell !in '0'..'9') {
-                        // exit numbermode when cell is not a digit
-                        mode = HeadMode.NORMAL
-                        doCell(cell, board)
-                    } else {
-                        stack.push(stack.pop() * 10 + cell.toDigit())
-                    }
-                }
-                HeadMode.FLOATING -> {
-                    // skips all instructions until next ~
-                    if(cell == '~') {
-                        mode = HeadMode.NORMAL
-                    }
-                }
-                HeadMode.DEAD -> {
-                    // terminated; does nothing
-                    return
+                } else {
+                    stack.push(stack.pop() * 10 + cell.toDigit())
                 }
             }
-
-            // move
-            move(board, checkWalls = mode != HeadMode.STRING)
-        } catch(ex: Exception) {
-            System.err.println("Head encountered exception at ($posX,$posY).")
-            System.err.println("STATE: $mode")
-            System.err.println("DIR: $direction")
-            System.err.println("REG: $register")
-            System.err.println("CELL: ${board[posY][posX]}")
-
-            System.err.println("\nBOARD\n-----")
-            System.err.println("$board")
-
-            System.err.println("\nSTACK DUMP\n---TOP----")
-            while(stack.size > 0) {
-                System.err.println(stack.pop())
+            HeadMode.FLOATING -> {
+                // skips all instructions until next ~
+                if(cell == '~') {
+                    mode = HeadMode.NORMAL
+                }
             }
-
-            System.err.println("\nJVM stacktrace below:")
-            ex.printStackTrace()
-            mode = HeadMode.DEAD
+            HeadMode.DEAD -> {
+                // terminated; does nothing
+                return
+            }
         }
+
+        // move
+        move(board, checkWalls = mode != HeadMode.STRING)
     }
 
     /**
@@ -458,6 +438,19 @@ class Head {
 
     fun isDead(): Boolean {
         return mode == HeadMode.DEAD
+    }
+
+    /**
+    * Generate debug info string for the head.
+    */
+    fun debugInfo(): String {
+        return """
+        STATE: $mode
+        POS: ($posX, $posY)
+        DIR: $direction
+        REG: $register
+        STACK: ${stack.toString()}
+        """.trimIndent()
     }
 
     // Reflect the direction of the head.

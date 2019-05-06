@@ -7,6 +7,8 @@ class Stack {
     private val deque = MutableList<Int>(0){0}
     val size get() = deque.size
 
+    override fun toString(): String = deque.toString()
+    
     fun push(item: Int) {
         deque.add(item)
     }
