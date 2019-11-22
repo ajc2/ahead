@@ -3,12 +3,19 @@ package ajc2.ahead
 import kotlin.random.Random
 import kotlin.math.*
 
+// charcodes
+private const val DQUOTE =  34  // "
+private const val TILDE  = 126  // ~
+private const val ZERO   =  48  // 0
+private const val NINE   =  57  // 9
+private const val HASH   =  35  // #
+
 /**
 * Program execution and behavior.
 * The head is the Ahead equivalent of the
 * instruction pointer or program counter.
 */
-class Head {
+class Head { 
     private val rand = Random.Default
     private val io = IOWrapper()
 
@@ -32,26 +39,28 @@ class Head {
             }
             HeadMode.STRING -> {
                 // pushes chars on board to stack
-                if(cell == '\u0022') {
+                if(cell == DQUOTE) {
                     // exit stringmode when encountering a doublequote
                     mode = HeadMode.NORMAL
-                } else {
-                    stack.push(cell.toInt())
+                }
+		        else {
+                    stack.push(cell)
                 }
             }
             HeadMode.NUMBER -> {
                 // reads number values onto the stack
-                if(cell !in '0'..'9') {
+                if(cell !in ZERO..NINE) {
                     // exit numbermode when cell is not a digit
                     mode = HeadMode.NORMAL
                     doCell(cell, board)
-                } else {
+                }
+                else {
                     stack.push(stack.pop() * 10 + cell.toDigit())
                 }
             }
             HeadMode.FLOATING -> {
                 // skips all instructions until next ~
-                if(cell == '~') {
+                if(cell == TILDE) {
                     mode = HeadMode.NORMAL
                 }
             }
@@ -68,10 +77,13 @@ class Head {
     /**
     * Interpret a cell as an instruction.
     */
-    private fun doCell(cell: Char, board: Board) {
+    private fun doCell(cell: Int, board: Board) {
         //println("DO: $cell")
+        if(cell.isWall()) {
+            throw Exception("Head inside wall")
+        }
         
-        when(cell) {
+        when(cell.toChar()) {
             in '0'..'9' -> {
                 // Enter numbermode when a digit is encountered
                 stack.push(cell.toDigit())
@@ -167,7 +179,7 @@ class Head {
                 val b = stack.pop()
                 val a = stack.pop()
                 stack.push(
-                        a.toDouble().pow(b.toDouble()).toInt()
+                    a.toDouble().pow(b.toDouble()).toInt()
                 )
             }
             'o' -> {
@@ -431,7 +443,7 @@ class Head {
             }
             'M' -> {
                 // Pop char and evaluate
-                doCell(stack.pop().toChar(), board)
+                doCell(stack.pop(), board)
             }
         }
     }

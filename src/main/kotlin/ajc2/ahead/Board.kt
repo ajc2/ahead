@@ -2,8 +2,11 @@ package ajc2.ahead
 
 import java.io.File
 
+/**
+ * Code board object
+ */
 class Board {
-    private val cells: Array<CharArray>
+    private val cells: List<IntArray>
     val height: Int
     val width: Int
     
@@ -12,8 +15,8 @@ class Board {
         height = lines.size
         width = lines.map { it.length }.max()!!
         cells = lines.map {
-            it.padEnd(width).toCharArray()
-        }.toTypedArray()
+            it.padEnd(width).map(Char::toInt).toIntArray()
+        }
     }
 
     constructor(string: String) {
@@ -21,16 +24,16 @@ class Board {
         height = lines.size
         width = lines.map { it.length }.max()!!
         cells = lines.map {
-            it.padEnd(width).toCharArray()
-        }.toTypedArray()
+            it.padEnd(width).map(Char::toInt).toIntArray()
+        }
     }
 
-    operator fun get(index: Int): CharArray = cells[index]
+    operator fun get(index: Int) = cells[index]
 
     fun isValid(x: Int, y: Int, checkWalls: Boolean = true): Boolean {
         var valid = x in 0..width-1 && y in 0..height-1
         if(checkWalls) {
-            valid = valid && cells[y][x] != '#'
+            valid = valid && !cells[y][x].isWall()
         }
         return valid
     }

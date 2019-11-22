@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
     implementation("com.github.ajalt:clikt:1.7.0")
 }
 
