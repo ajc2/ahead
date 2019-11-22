@@ -363,6 +363,12 @@ class Head {
                 move(board, checkWalls = false)
                 stack.push(board[posY][posX].toInt())
             }
+            ',' -> {
+                // Put down
+                // Pop stack and place in next cell
+                move(board, checkWalls = false)
+                board[posY][posX] = stack.pop()
+            }
             'i' -> {
                 // Input Char
                 val i: Int? = io.getChar()

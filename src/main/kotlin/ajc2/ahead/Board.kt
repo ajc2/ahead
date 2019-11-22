@@ -40,7 +40,14 @@ class Board {
 
     override fun toString(): String {
         return cells.map {
-            it.joinToString("")
+            it.map {
+                if(it < 0) {
+                    '\uFFFD'
+                }
+                else {
+                    it.toChar()
+                }
+            }.joinToString("")
         }.joinToString("\n")
     }
 }
