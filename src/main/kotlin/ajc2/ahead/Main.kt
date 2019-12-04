@@ -23,12 +23,26 @@ class Ahead : CliktCommand(help = HELP_TEXT, epilog = EPILOG_TEXT) {
     val debug by option("-d", "--debug", help = "Show verbose debugging information.")
             .flag(default = false)
     val script by argument()
+    val ioMode by option().switch(
+        "-b" to "binlittle",
+        "-B" to "binbig",
+        "--binlittle" to "binlittle",
+        "--binbig" to "binbig"
+    ).default("text")
 
     override fun run() {
         val board: Board
         val head: Head
 
-        head = Head()
+        // select IO wrapper to use based on chosen mode
+        val io = when(ioMode) {
+            "text" -> TextIOWrapper()
+            "binlittle" -> BinLittleIOWrapper()
+            "binbig" -> BinBigIOWrapper()
+            else -> TextIOWrapper()
+        }
+
+        head = Head(io)
         
         if(stackContents != null && stackContents?.size != 0) {
             head.stack.addAll(stackContents!!)

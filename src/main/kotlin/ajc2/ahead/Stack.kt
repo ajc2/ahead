@@ -50,4 +50,6 @@ class Stack {
     fun reverse() {
         deque.reverse()
     }
+
+    fun indexOf(v: Int) = deque.lastIndex - deque.indexOf(v)
 }

@@ -15,9 +15,8 @@ private const val HASH   =  35  // #
 * The head is the Ahead equivalent of the
 * instruction pointer or program counter.
 */
-class Head { 
+class Head(private val io: IOWrapper) { 
     private val rand = Random.Default
-    private val io = IOWrapper()
 
     val stack = Stack()
     var register = 0
@@ -184,11 +183,11 @@ class Head {
             }
             'o' -> {
                 // Output Char
-                print(stack.pop().toChar())
+                io.printChar(stack.pop())
             }
             'O' -> {
                 // Output Number
-                print(stack.pop())
+                io.printNumber(stack.pop())
             }
             '?' -> {
                 // Maybe Reflect
@@ -450,6 +449,11 @@ class Head {
             'M' -> {
                 // Pop char and evaluate
                 doCell(stack.pop(), board)
+            }
+            'f' -> {
+                // Find on stack
+                val v = stack.pop()
+                stack.push(stack.indexOf(v))
             }
         }
     }
