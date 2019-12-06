@@ -88,8 +88,7 @@ class Head(private val io: IOWrapper) {
                 stack.push(cell.toDigit())
                 mode = HeadMode.NUMBER
             }
-            '\u0022' -> {
-                // Doublequote
+            '"' -> {
                 // enter stringmode
                 mode = HeadMode.STRING
                 stack.push(0)
@@ -422,7 +421,14 @@ class Head(private val io: IOWrapper) {
             }
             'U' -> {
                 // Reverse up to first 0
-                TODO()
+                val i = stack.indexOf(0)
+                if(i == -1) {
+                    stack.reverse()
+                }
+                else {
+                    stack.subList(stack.lastIndex - i, stack.size)
+                        .reverse()
+                }
             }
             '{' -> {
                 stack.shiftLeft()

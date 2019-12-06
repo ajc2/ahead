@@ -91,7 +91,7 @@ class TextIOWrapper : IOWrapper {
  */
 class BinLittleIOWrapper : IOWrapper {
     private val input = DataInputStream(System.`in`)
-    private val output = DataOutputStream(System.`out`)
+    private val output = DataOutputStream(System.out)
     
     override fun getChar(): Int? {
         var o: Int?
@@ -137,9 +137,55 @@ class BinLittleIOWrapper : IOWrapper {
 }
 
 class BinBigIOWrapper : IOWrapper {
-    override fun getChar(): Int? = TODO()
-    override fun getNumber(): Int? = TODO()
-    override fun printChar(v: Int) = TODO()
-    override fun printNumber(v: Int) = TODO()
-    override fun close() = TODO()
+    private val input = DataInputStream(System.`in`)
+    private val output = DataOutputStream(System.out)
+    
+    override fun getChar(): Int? {
+        var o: Int?
+        try {
+            o = input.readUnsignedByte()
+        }
+        catch(ex: IOException) {
+            return null
+        }
+        return o
+    }
+    
+    override fun getNumber(): Int? {
+        var o: Int?
+        try {
+            o = input.readInt()
+        }
+        catch(ex: IOException) {
+            return null
+        }
+        return o
+    }
+    
+    override fun printChar(v: Int) {
+        output.writeByte(v)
+        output.flush()
+    }
+    
+    override fun printNumber(v: Int) {
+        output.writeInt(v)
+        output.flush()
+    }
+    
+    override fun close() {
+        input.close()
+        output.close()
+    }
+}
+
+/**
+ * IOWrapper that does nothing.
+ * Included just in case
+ */
+class NullIOWrapper: IOWrapper {
+    override fun getChar() = null
+    override fun getNumber() = null
+    override fun printChar(v: Int) {}
+    override fun printNumber(v: Int) {}
+    override fun close() {}
 }

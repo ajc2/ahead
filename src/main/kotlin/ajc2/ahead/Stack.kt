@@ -1,55 +1,38 @@
 package ajc2.ahead
 
 /**
- * Simple wrapper around MutableList<Int>.
+ * Simple wrapper around ArrayList<Int>.
  */
-class Stack {
-    private val deque = MutableList<Int>(0){0}
-    val size get() = deque.size
-
-    override fun toString(): String = deque.toString()
-    
+class Stack : ArrayList<Int>() {
     fun push(item: Int) {
-        deque.add(item)
+        add(item)
     }
 
     fun push(item: Char) {
-        deque.add(item.toInt())
+        add(item.toInt())
     }
 
     fun pop(): Int {
         return if(size == 0) {
             0
         } else {
-            deque.removeAt(deque.lastIndex)
+            removeAt(lastIndex)
         }
     }
 
     fun dup() {
-        deque.add(
-            if(size == 0) 0 else deque.last()
+        add(
+            if(size == 0) 0 else last()
         )
-    }
-
-    fun clear() {
-        deque.clear()
-    }
-
-    fun addAll(list: List<Int>) {
-        deque.addAll(list)
     }
     
     fun shiftLeft() {
-        if(size > 1) deque.add(deque.removeAt(0))
+        if(size > 1) add(removeAt(0))
     }
 
     fun shiftRight() {
-        if(size > 1) deque.add(0, deque.removeAt(deque.lastIndex))
+        if(size > 1) add(0, removeAt(lastIndex))
     }
 
-    fun reverse() {
-        deque.reverse()
-    }
-
-    fun indexOf(v: Int) = deque.lastIndex - deque.indexOf(v)
+    override fun indexOf(element: Int) = lastIndex - super.indexOf(element)
 }

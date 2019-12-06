@@ -39,7 +39,7 @@ class Ahead : CliktCommand(help = HELP_TEXT, epilog = EPILOG_TEXT) {
             "text" -> TextIOWrapper()
             "binlittle" -> BinLittleIOWrapper()
             "binbig" -> BinBigIOWrapper()
-            else -> TextIOWrapper()
+            else -> NullIOWrapper()  // if we get here something has gone wrong :grimace:
         }
 
         head = Head(io)
@@ -51,7 +51,14 @@ class Ahead : CliktCommand(help = HELP_TEXT, epilog = EPILOG_TEXT) {
         if(evaluate) {
             board = Board(script)
         } else {
-            board = Board(File(script))
+            val file = File(script)
+            if(file.isFile()) {
+                board = Board(file)
+            }
+            else {
+                echo("$script does not exist, or is not a file.", err = true)
+                return
+            }
         }
 
         if(debug) echo("BOARD\n-----\n${board.toString()}")
