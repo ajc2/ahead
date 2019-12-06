@@ -311,7 +311,7 @@ class Head(private val io: IOWrapper) {
                 // pop and write char until 0
                 do {
                     val a = stack.pop()
-                    if(a != 0) print(a.toChar())
+                    if(a != 0) io.printChar(a)
                 } while(a != 0)
             }
             'n' -> {
@@ -394,9 +394,7 @@ class Head(private val io: IOWrapper) {
                     a > b -> b..a
                     else -> a..a
                 }
-                for(i in range) {
-                    stack.push(i)
-                }
+                stack.addAll(range)
             }
             '[' -> {
                 val b = stack.pop()
@@ -426,7 +424,7 @@ class Head(private val io: IOWrapper) {
                     stack.reverse()
                 }
                 else {
-                    stack.subList(stack.lastIndex - i, stack.size)
+                    stack.subList(stack.size - i, stack.size)
                         .reverse()
                 }
             }
