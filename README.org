@@ -1,9 +1,10 @@
 #+OPTIONS: num:nil ^:{}
 #+TITLE: Ahead
+[[https://github.com/ajc2/ahead/workflows/Gradle%20CI/badge.svg]]
 
 The reference implementation of [[https://ajc2.xyz/projects/ahead][Ahead]]. This implementation is written in [[https://kotlinlang.org][Kotlin]] and now uses [[https://gradle.org][Gradle]] for builds.
 
-* What to do?
+* Build and Install
 ** 0: Install Gradle
 [[https://gradle.org/install][Here's how.]]
 ** 1: Clone this repository
