@@ -1,4 +1,18 @@
 #+OPTIONS: num:nil ^:{}
 #+TITLE: Guidelines for Contributing
+If you want to contribute to Ahead, please obey these guidelines.
 
-coming eventually
+* Style and Structure
+Ahead uses Kotlin and Gradle, so you should adhere to the standards of code style and project structure established by them. Ahead doesn't differ too far from that, but in the case that it does, please don't make a contribution just to change it, and don't get too upset if your minimal style change is ignored, overwritten, or rolled-back. The project is set up and written best for *me personally* so try to understand that.
+
+* Bugfixes, Small Patches, etc.
+If you're making a small change or fixing a bug, just work directly on the branch where the fix needs to be. I do pretty much everything on =master=, so that's usually where you want to go.
+
+* Big Changes, Feature Additions
+In the event that you want to make a large change to the code, or add a feature, please create a new branch. Give it a good name, one that is relevant to the contribution. When adding simple functions or augmenting existing features, it might not be necessary to create a new branch. Use your best judgement.
+
+* Samples
+If you want to contribute sample programs, please work on the =samples= branch. Additionally, if you're adding a new feature, you might want to create a demonstrative sample. Samples go in the =samples/= folder and use the =.txt= extension. Please use UTF-8.
+
+* Issues
+If your contribution has an issue associated with it, please mention it somehow.
