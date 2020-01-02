@@ -1,8 +1,11 @@
 #+OPTIONS: num:nil ^:{}
+#+STARTUP: inlineimages
 #+TITLE: Ahead
 [[https://github.com/ajc2/ahead/workflows/Gradle%20CI/badge.svg]]
 
-The reference implementation of [[https://ajc2.xyz/projects/ahead][Ahead]]. This implementation is written in [[https://kotlinlang.org][Kotlin]] and now uses [[https://gradle.org][Gradle]] for builds.
+[[https://ajc2.xyz/projects/ahead][Ahead]] is a [[https://esolangs.org/wiki/Fungeoid][Fungeoid]], a 2D grid-based esolang. It was primarily inspired by [[https://esolangs.org/wiki/Befunge][Befunge]] and [[https://esolangs.org/wiki/Fish][><>]], but Ahead has a stronger focus on source layout and a different set of functions. You can read the [[https://github.com/ajc2/ahead/wiki][Wiki]] section for more info.
+
+This is the reference implementation. It is written in [[https://kotlinlang.org][Kotlin]] and uses [[https://gradle.org][Gradle]] for builds.
 
 * Build and Install
 ** 0: Install Gradle
