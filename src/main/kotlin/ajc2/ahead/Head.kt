@@ -15,7 +15,7 @@ private const val HASH   =  35  // #
 * The head is the Ahead equivalent of the
 * instruction pointer or program counter.
 */
-class Head(private val io: IOWrapper) { 
+class Head(private val io: IOWrapper) {
     private val rand = Random.Default
 
     val stack = Stack()

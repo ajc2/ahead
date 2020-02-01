@@ -2,9 +2,13 @@ package ajc2.ahead
 
 import java.util.Scanner
 import java.util.regex.Pattern
+import java.io.InputStream
 import java.io.DataInputStream
+import java.io.PrintStream
+import java.io.OutputStream
 import java.io.DataOutputStream
 import java.io.IOException
+import java.nio.charset.Charset
 
 /**
  * A wrapper for all head IO functions
@@ -39,8 +43,13 @@ interface IOWrapper {
 /**
  * IOWrapper for text mode
  */
-class TextIOWrapper : IOWrapper {
-    private val input = Scanner(System.`in`, "utf8")
+class TextIOWrapper(
+    val inStream: InputStream = System.`in`,
+    val outStream: OutputStream = System.out,
+    val charset: Charset = Charset.defaultCharset()
+) : IOWrapper {
+
+    private val input = Scanner(inStream, charset.name())
     private val charPat = Pattern.compile(".", Pattern.DOTALL)
     private val numPat = Pattern.compile("""[+-]?\d+""")
 
@@ -64,18 +73,20 @@ class TextIOWrapper : IOWrapper {
      */
     override fun printChar(v: Int) {
         if(v < 0) {
-            print('\uFFFD')
+            outStream.write('\uFFFD'.toString().toByteArray(charset))
         }
         else {
-            print(v.toChar())
+            outStream.write(v.toChar().toString().toByteArray(charset))
         }
+        outStream.flush()
     }
 
     /**
      * Print this value as an integer
      */
     override fun printNumber(v: Int) {
-        print(v)
+        outStream.write(v.toString().toByteArray(charset))
+        outStream.flush()
     }
 
     /**
@@ -89,9 +100,13 @@ class TextIOWrapper : IOWrapper {
 /**
  * IOWrapper for little-endian binary mode
  */
-class BinLittleIOWrapper : IOWrapper {
-    private val input = DataInputStream(System.`in`)
-    private val output = DataOutputStream(System.out)
+class BinLittleIOWrapper(
+    val inStream: InputStream = System.`in`,
+    val outStream: OutputStream = System.out
+) : IOWrapper {
+    
+    private val input = DataInputStream(inStream)
+    private val output = DataOutputStream(outStream)
     
     override fun getChar(): Int? {
         var o: Int?
@@ -136,9 +151,13 @@ class BinLittleIOWrapper : IOWrapper {
     }
 }
 
-class BinBigIOWrapper : IOWrapper {
-    private val input = DataInputStream(System.`in`)
-    private val output = DataOutputStream(System.out)
+class BinBigIOWrapper(
+    val inStream: InputStream = System.`in`,
+    val outStream: OutputStream = System.out
+) : IOWrapper {
+    
+    private val input = DataInputStream(inStream)
+    private val output = DataOutputStream(outStream)
     
     override fun getChar(): Int? {
         var o: Int?
