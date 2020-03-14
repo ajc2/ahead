@@ -5,41 +5,40 @@ import java.io.File
 /**
  * Code board object
  */
-class Board {
-    private val cells: List<IntArray>
+class Board(private val src: String) {
+    private val cells: IntArray
     val height: Int
     val width: Int
-    
-    constructor(file: File) {
-        val lines = file.readLines()
-        height = lines.size
-        width = lines.map { it.length }.max()!!
-        cells = lines.map {
-            it.padEnd(width).map(Char::toInt).toIntArray()
-        }
-    }
 
-    constructor(string: String) {
-        val lines = string.lines()
+    init {
+        val lines = src.lines()
         height = lines.size
         width = lines.map { it.length }.max()!!
-        cells = lines.map {
-            it.padEnd(width).map(Char::toInt).toIntArray()
-        }
+        cells = lines.flatMap {
+            it.padEnd(width).map(Char::toInt)
+        }.toIntArray()
     }
 
     operator fun get(index: Int) = cells[index]
+    operator fun get(x: Int, y: Int) = cells[y*width+x]
+
+    operator fun set(index: Int, value: Int) {
+        cells[index] = value
+    }
+    operator fun set(x: Int, y: Int, value: Int) {
+        cells[y*width+x] = value
+    }
 
     fun isValid(x: Int, y: Int, checkWalls: Boolean = true): Boolean {
         var valid = x in 0..width-1 && y in 0..height-1
         if(checkWalls) {
-            valid = valid && !cells[y][x].isWall()
+            valid = valid && !cells[y*width+x].isWall()
         }
         return valid
     }
 
     override fun toString(): String {
-        return cells.map {
+        return cells.asIterable().chunked(width) {
             it.map {
                 if(it < 0) {
                     '\uFFFD'

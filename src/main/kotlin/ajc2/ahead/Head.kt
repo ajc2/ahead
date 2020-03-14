@@ -30,7 +30,7 @@ class Head(private val io: IOWrapper) {
     */
     fun step(board: Board) {
         // interpret current cell
-        val cell = board[posY][posX]
+        val cell = board[posX,posY]
         when(mode) {
             HeadMode.NORMAL -> {
                 // normal mode of execution
@@ -77,7 +77,6 @@ class Head(private val io: IOWrapper) {
     * Interpret a cell as an instruction.
     */
     private fun doCell(cell: Int, board: Board) {
-        //println("DO: $cell")
         if(cell.isWall()) {
             throw Exception("Head inside wall")
         }
@@ -272,7 +271,7 @@ class Head(private val io: IOWrapper) {
                 val a = stack.pop()
                 move(board)
                 if(a > 0) {
-                    val c = board[posY][posX]
+                    val c = board[posX,posY]
                     repeat(a) {
                         doCell(c, board)
                     }
@@ -359,13 +358,13 @@ class Head(private val io: IOWrapper) {
                 // Pick Up
                 // Push next cell to stack and skip
                 move(board, checkWalls = false)
-                stack.push(board[posY][posX].toInt())
+                stack.push(board[posX,posY].toInt())
             }
             ',' -> {
                 // Put down
                 // Pop stack and place in next cell
                 move(board, checkWalls = false)
-                board[posY][posX] = stack.pop()
+                board[posX,posY] = stack.pop()
             }
             'i' -> {
                 // Input Char
@@ -409,7 +408,7 @@ class Head(private val io: IOWrapper) {
             'K' -> {
                 move(board)
                 while(stack.size > 1) {
-                    val c = board[posY][posX]
+                    val c = board[posX,posY]
                     doCell(c, board)
                 }
             }

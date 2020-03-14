@@ -57,7 +57,7 @@ class Ahead : CliktCommand(help = HELP_TEXT, epilog = EPILOG_TEXT) {
         } else {
             val file = File(script)
             if(file.isFile()) {
-                board = Board(file)
+                board = Board(file.readText(encoding ?: Charset.defaultCharset()))
             }
             else {
                 echo("$script does not exist, or is not a file.", err = true)
