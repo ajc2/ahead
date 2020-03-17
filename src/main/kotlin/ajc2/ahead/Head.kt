@@ -310,8 +310,8 @@ class Head(private val io: IOWrapper) {
                 // pop and write char until 0
                 do {
                     val a = stack.pop()
-                    if(a != 0) io.printChar(a)
-                } while(a != 0)
+                    if(a > 0) io.printChar(a)
+                } while(a > 0)
             }
             'n' -> {
                 // Maybe North
@@ -457,6 +457,17 @@ class Head(private val io: IOWrapper) {
                 // Find on stack
                 val v = stack.pop()
                 stack.push(stack.indexOf(v))
+            }
+            'F' -> {
+                // Find in string
+                val s = stack.popString()
+                val v = stack.pop()
+                if(v <= 0) {
+                    stack.push(-1)
+                }
+                else {
+                    stack.push(s.indexOf(v.toChar()))
+                }
             }
         }
     }

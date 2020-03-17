@@ -5,18 +5,22 @@ import java.io.File
 /**
  * Code board object
  */
-class Board(private val src: String) {
+class Board(val src: String) {
     private val cells: IntArray
+    val comment: String
     val height: Int
     val width: Int
 
     init {
         val lines = src.lines()
-        height = lines.size
         width = lines.map { it.length }.max()!!
-        cells = lines.flatMap {
-            it.padEnd(width).map(Char::toInt)
-        }.toIntArray()
+        comment = lines.takeWhile { it.startsWith("#") }
+            .map { it.drop(1) }
+            .joinToString("\n")
+        cells = lines.dropWhile { it.startsWith("#") }
+            .flatMap { it.padEnd(width).map(Char::toInt) }
+            .toIntArray()
+        height = cells.size / width
     }
 
     operator fun get(index: Int) = cells[index]

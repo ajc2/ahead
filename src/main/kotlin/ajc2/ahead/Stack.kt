@@ -20,6 +20,20 @@ class Stack : ArrayList<Int>() {
         }
     }
 
+    fun popString(): String {
+        val sb = StringBuilder()
+        while(size > 0) {
+            val c = removeAt(lastIndex)
+            if(c > 0) {
+                sb.append(c.toChar())
+            }
+            else {
+                break
+            }
+        }
+        return sb.toString()
+    }
+
     fun dup() {
         add(
             if(size == 0) 0 else last()
